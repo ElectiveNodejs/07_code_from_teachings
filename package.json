@@ -1,7 +1,7 @@
 {
   "name": "07_code_from_teachings",
   "version": "1.0.0",
-  "description": "",
+  "description": "kjhkhkh",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ElectiveNodejs/07_code_from_teachings#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "mongodb": "^2.2.31"
   }
