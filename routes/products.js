@@ -24,7 +24,7 @@ app.get('/products', function (req, res) {
         var col = db.collection('products');
         // Read All
         col.find().toArray(function (err, result) {
-            //console.log(result);
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.json(result);
         });
         db.close();
