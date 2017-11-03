@@ -1,6 +1,13 @@
 const express = require('express');
 const app = express();
 
+
+app.use(function(req, res, next){
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+});
+
+
 const customersModule = require('./routes/customers.js');
 app.use(customersModule);
 
