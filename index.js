@@ -12,6 +12,11 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+// Customers ////
+// ============= //
+
+
 // READ (all)
 app.get('/customers', function (req, res) {
     MongoClient.connect(mongodburl, function (err, db) {
@@ -188,42 +193,41 @@ app.post('/orders/', function (req, res) {
     MongoClient.connect(mongodburl, function (err, db) {
        
         var orderCol = db.collection('orders');
-        var custCol = db.collection('customer');
+        var custCol = db.collection('customers');
         var prodCol = db.collection('products');
 
         var ordersTotal = {};
 
-        custCol.findOne({ '_id': ObjectId(req.body.user) }, function(err, result){
-                
-                console.log(req.body.user);
-                ordersTotal.user = result;
-                console.log(ordersTotal);
-                res.json(result);
+        custCol.findOne({ '_id': ObjectId(req.body.user) }, function(err, result){         
+                ordersTotal.user = result;      
         });
 
-        var productsArray = [];
+        ordersTotal.products = [];
 
         req.body.products.forEach(function(element, index, array) {
             
             prodCol.findOne({ '_id': ObjectId(element) }, function(err, result){
-                productsArray = result;
+                ordersTotal.products.push(result);
+             
+
+                if(index === array.length-1) {
+                    orderCol.insertOne(ordersTotal, function (err, result) {
+                        if(err){
+                            console.log(err);
+                        } else {
+                            res.status(201);
+                            res.json({ msg: 'Order Created' });
+                            console.log(ordersTotal);
+                        }
+                    })
+                    db.close();
+                }
+
             });
-
-            if(index === array.length-1) {
-                ordersTotal = productsArray;
-            }
-
         });
 
-        
 
-        
-
-        /*col.insertOne(ordersTotal, function (err, result) {
-            res.status(201);
-            res.json({ msg: 'Customer Created' });
-        })*/
-        db.close();
+       
     });
 });
 // DELETE
