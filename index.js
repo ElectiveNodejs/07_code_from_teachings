@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
 
-
+var Cors = require('cors');
 /*app.use(function(req, res, next){
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });*/
 
-
+app.use(Cors());
 const customersModule = require('./routes/customers.js');
 app.use(customersModule);
 
